@@ -1,5 +1,6 @@
 import requests
 
+from model import Film
 from bs4 import BeautifulSoup
 
 
@@ -79,6 +80,11 @@ def get_rating_film(html):
 
 
 def general():
+    film = Film(
+        name = get_name_film(html), tagline = get_tagline_film(html), actors = get_actors_film(html), 
+        rating = get_rating_film(html), year = get_film(html)['Год'],
+    )
+    '''
     film_data = {}
     film_data['Название фильма'] = get_name_film(html)
     film_data['Слоган'] = get_tagline_film(html)
@@ -87,32 +93,31 @@ def general():
     for a in get_film(html):
         film_data[a] = get_film(html)[a]
     film_data['Продолжительность'] = get_long_film(html)
+    '''
+    return film    
 
-    return film_data    
-  
 
-
+'''
 #Для парсинга из файла
 f = open('film.html', 'r', encoding = 'utf-8')
 content = f.read()
 html = content
 soup = BeautifulSoup(html, 'html.parser')
 general()
-
-
-
 '''
+
+
+
 
     
 # Для парсинга с сайта    
-    
+  
 html = get_html("https://www.kinopoisk.ru/film/326/")
 soup = BeautifulSoup(html, 'html.parser')
 if html:
-    general()
-    
+    general()    
 
-'''
+
 
    
 
