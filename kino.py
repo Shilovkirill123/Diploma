@@ -100,11 +100,6 @@ def get_imdb_film(html):
 
 
 def general():
-    film = Film(
-        name = get_name_film(html), tagline = get_tagline_film(html), actors = get_actors_film(html), 
-        rating = get_rating_film(html), year = get_film(html)['год'],
-    )
-    '''
     film_data = {}
     film_data['Название фильма'] = get_name_film(html)
     film_data['Слоган'] = get_tagline_film(html)
@@ -125,7 +120,7 @@ def general():
     return film
 
 
-'''
+
 #Для парсинга из файла
 f = open('film.html', 'r', encoding='utf-8')
 content = f.read()
