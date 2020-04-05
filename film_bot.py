@@ -16,6 +16,7 @@ def main():
     dp = mybot.dispatcher
     dp.add_handler(CommandHandler("films", films))
     dp.add_handler(CommandHandler("film", film))
+    dp.add_handler(CommandHandler("123", film_base))
     dp.add_handler(MessageHandler(Filters.text, talk_to_me))
     mybot.start_polling()
     mybot.idle()
