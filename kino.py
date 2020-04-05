@@ -31,12 +31,18 @@ def get_film(html):
     film_attr = {}
     film_lists = soup.find('table', {'class': 'info'}).find_all('tr')
     for film in film_lists:
+<<<<<<< HEAD
         a = film.find('td', {'class': 'type'}).text
         try:
             if a in attr:
                 film_attr[a.capitalize()] = film.find("a").text
         except(AttributeError):
             film_attr[a.capitalize()] = 'нет данных'
+=======
+        a = film.find('td',{'class':'type'}).text
+        if a in attr:
+             film_attr[a.capitalize()]=film.find("a").text
+>>>>>>> 009bac50268e7266c7b3b60acd5f6dee55c07af0
     return film_attr
 
 
@@ -100,6 +106,11 @@ def get_imdb_film(html):
 
 
 def general():
+    film = Film(
+        name = get_name_film(html), tagline = get_tagline_film(html), actors = get_actors_film(html), 
+        rating = get_rating_film(html), year = get_film(html)['год'],
+    )
+    '''
     film_data = {}
     film_data['Название фильма'] = get_name_film(html)
     film_data['Слоган'] = get_tagline_film(html)
@@ -109,6 +120,7 @@ def general():
     film_data['Рейтинг IMDB'] = get_imdb_film(html)
     for a in get_film(html):
         film_data[a] = get_film(html)[a]
+<<<<<<< HEAD
     film_data['Продолжительность'] = get_duration_film(html)
     film_data['Номер на кинопоиске'] = get_number_film(html)
 
@@ -118,16 +130,24 @@ def general():
         rating_imdb=get_imdb_film(html), year=film_data['Год']
     )
     return film
+=======
+    film_data['Продолжительность'] = get_long_film(html)
+    '''
+    return film    
+>>>>>>> 009bac50268e7266c7b3b60acd5f6dee55c07af0
 
 
+'''
 #Для парсинга из файла
 f = open('film.html', 'r', encoding='utf-8')
 content = f.read()
 html = content
 soup = BeautifulSoup(html, 'html.parser')
 general()
+'''
 
 
+<<<<<<< HEAD
 '''
 
 # Для парсинга с сайта
@@ -136,5 +156,22 @@ html = get_html("https://www.kinopoisk.ru/film/44386/")
 soup = BeautifulSoup(html, 'html.parser')
 if html:
     general()
+=======
+
+
+    
+# Для парсинга с сайта    
+  
+html = get_html("https://www.kinopoisk.ru/film/957887/") 
+soup = BeautifulSoup(html, 'html.parser')
+if html:
+    general()    
+
+
+
+   
+
+
+>>>>>>> 009bac50268e7266c7b3b60acd5f6dee55c07af0
 
 '''
