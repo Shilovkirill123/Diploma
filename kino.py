@@ -120,7 +120,6 @@ def general():
     return film
 
 
-
 #Для парсинга из файла
 f = open('film.html', 'r', encoding='utf-8')
 content = f.read()
