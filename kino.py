@@ -15,7 +15,7 @@ def get_html(url):
    
 
 def get_name_film(html):
-    film_list = soup.find(itemprop="name")['content']
+    film_list = soup.find('span', class_="moviename-title-wrapper").text
     return film_list
 
 
@@ -26,7 +26,7 @@ def get_film(html):
     soup = BeautifulSoup(html, 'html.parser')
     film_lists = soup.find('table',{'class':'info'}).find_all('tr')
     for film in film_lists:
-        a= film.find('td',{'class':'type'}).text
+        a = film.find('td',{'class':'type'}).text
         if a in attr:
              film_attr[a.capitalize()]=film.find("a").text
     return film_attr
@@ -82,7 +82,7 @@ def get_rating_film(html):
 def general():
     film = Film(
         name = get_name_film(html), tagline = get_tagline_film(html), actors = get_actors_film(html), 
-        rating = get_rating_film(html), year = get_film(html)['Год'],
+        rating = get_rating_film(html), year = get_film(html)['год'],
     )
     '''
     film_data = {}
@@ -112,7 +112,7 @@ general()
     
 # Для парсинга с сайта    
   
-html = get_html("https://www.kinopoisk.ru/film/326/")
+html = get_html("https://www.kinopoisk.ru/film/957887/") 
 soup = BeautifulSoup(html, 'html.parser')
 if html:
     general()    
