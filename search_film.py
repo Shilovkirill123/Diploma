@@ -13,6 +13,6 @@ def parsers(user_choice):
         for ids in link.find_all('a'):
             find_link.append(links + ids.get('data-id'))
     find_link = find_link[0]
-    print(find_link)
+    print('Получение ссылки фильма')
     return find_link
  

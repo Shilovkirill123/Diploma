@@ -8,14 +8,18 @@ from search_film import parsers
 
 def get_html(url):
     ua = UserAgent()
-    headers = {
-            'User-Agent': ua.random
+
+    cookies = {'Session_id': '3:1587124320.5.0.1587124320224:bVGtHw:2.1|1068170327.0.2|215675.573986.vrBoC-b8s6JKSvzkc99ehMowExk'}
+    headers = {'User-Agent': ua.random}
+    '''
+    proxies = {
+            'https': 'http://67.205.146.29:3128'
         }
-    
+    '''    
     try:
-        result = requests.get(url, headers=headers)
+        result = requests.get(url, headers=headers, cookies=cookies)
         result.raise_for_status()
-        print(result.text)
+        #print(result.text)
         return result.text
         
     except(requests.RequestException, ValueError):
@@ -91,12 +95,6 @@ def get_rating_film(soup):
     return film_list
 
 
-def get_number_film(soup):
-    film_list = soup.find('li', {'class' : 'el_1'}).find('a').get('href')
-    film_list = film_list.replace('https://www.kinopoisk.ru/film/', '').replace('/#', '')
-    return film_list
-
-
 def get_imdb_film(soup):
     film_list = soup.find('div', {'style': 'color:#999;font:100 11px tahoma, verdana'}).text.split()
     film_list = film_list[1]
@@ -106,56 +104,23 @@ def get_imdb_film(soup):
 def general(link):
     html = get_html(link)
     soup = BeautifulSoup(html, 'html.parser')
+    print(link)
     film_data = {}
+    if get_name_film(soup) is None:
+        print('123123')
     film_data['Название фильма'] = get_name_film(soup)
-    print(film_data)
     film_data['Слоган'] = get_tagline_film(soup)
-    print(film_data)
     film_data['Актеры'] = get_actors_film(soup)
-    print(film_data)
     film_data['Жанр'] = get_genre_film(soup)
-    print(film_data)
     film_data['Рейтинг Кинопоиска'] = get_rating_film(soup)
-    print(film_data)
     film_data['Рейтинг IMDB'] = get_imdb_film(soup)
     for a in get_film(soup):
         film_data[a] = get_film(soup)[a]
-        print(film_data)
     film_data['Продолжительность'] = get_duration_film(soup)
-    print(film_data)
-    film_data['Номер на кинопоиске'] = get_number_film(soup)
-
+    film_data['Номер на кинопоиске'] = link.replace('https://www.kinopoisk.ru/film/', '')
     film = Film(
-        id_kinopoisk=get_number_film(soup), name=get_name_film(soup), tagline=get_tagline_film(soup),
+        id_kinopoisk=film_data['Номер на кинопоиске'], name=get_name_film(soup), tagline=get_tagline_film(soup),
         actors=get_actors_film(soup), director=film_data['Режиссер'], rating=get_rating_film(soup),
         rating_imdb=get_imdb_film(soup), year=film_data['Год']
     )
     return film
-
-
-
-'''
-#Для парсинга из файла
-f = open('film.html', 'r', encoding='utf-8')
-content = f.read()
-html = content
-soup = BeautifulSoup(html, 'html.parser')
-general()
-
-
-# Для парсинга с сайта
-
-print(content)
-html = get_html(content) 
-soup = BeautifulSoup(html, 'html.parser')
-if html:
-    general()
-
-
-link = film_base()
-
-html = get_html(link) 
-soup = BeautifulSoup(html, 'html.parser')
-if html:
-    general()
-'''
